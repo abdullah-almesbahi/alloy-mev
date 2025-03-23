@@ -1,5 +1,6 @@
 use alloy::{signers::Signer, transports::http::Http};
 use url::Url;
+use reqwest;
 
 use super::bundle_signer::BundleSigner;
 
@@ -32,6 +33,24 @@ impl<T> MevHttp<T> {
     {
         Self {
             endpoint: "https://relay.flashbots.net".parse().unwrap(),
+            http,
+            bundle_signer: BundleSigner::flashbots(Box::new(signer)),
+        }
+    }
+}
+
+// Specialized implementation for reqwest::Client
+impl MevHttp<reqwest::Client> {
+    /// Creates a new [`MevHttp`] transport specifically for reqwest client.
+    pub fn new_with_reqwest_client<S>(signer: S) -> Self
+    where
+        S: Signer + Send + Sync + 'static,
+    {
+        let endpoint: Url = "https://relay.flashbots.net".parse().unwrap();
+        let http = Http::new(endpoint.clone());
+        
+        Self {
+            endpoint,
             http,
             bundle_signer: BundleSigner::flashbots(Box::new(signer)),
         }

@@ -19,7 +19,6 @@ async fn test_sim_mev_bundle() {
     let wallet = EthereumWallet::new(signer.clone());
 
     let provider = ProviderBuilder::new()
-        .with_recommended_fillers()
         .wallet(wallet.clone())
         .on_http(eth_rpc.parse().unwrap());
 

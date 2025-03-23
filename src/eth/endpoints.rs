@@ -17,6 +17,12 @@ impl Endpoints {
     {
         EndpointsBuilder::new(http)
     }
+    
+    /// Creates a new builder with a reqwest client.
+    pub fn builder_with_reqwest_client() -> EndpointsBuilder<reqwest::Client> {
+        let http = Http::<reqwest::Client>::new("http://localhost:8545".parse().unwrap());
+        EndpointsBuilder::new(http)
+    }
 
     /// Adds the given transport.
     pub fn add(&mut self, transport: BoxTransport) {

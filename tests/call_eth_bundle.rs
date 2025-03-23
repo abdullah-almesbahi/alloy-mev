@@ -19,7 +19,6 @@ async fn test_call_eth_bundle() {
     let wallet = EthereumWallet::new(signer.clone());
 
     let provider = ProviderBuilder::new()
-        .with_recommended_fillers()
         .wallet(wallet.clone())
         .on_http(eth_rpc.parse().unwrap());
 
@@ -41,6 +40,9 @@ async fn test_call_eth_bundle() {
                 gas_limit: None,
                 difficulty: None,
                 base_fee: None,
+                coinbase: Default::default(),
+                timeout: Default::default(),
+                transaction_index: Default::default(),
             },
             &endpoints,
         )

@@ -21,7 +21,7 @@ use crate::MevHttp;
 #[derive(Debug)]
 pub struct MevShareBundle<'a, P, C, N, S>
 where
-    P: Provider<Http<C>, N>,
+    P: Provider<N>,
     C: Clone,
     N: Network,
     S: Signer + Send + Sync + 'static,
@@ -35,7 +35,7 @@ where
 
 impl<'a, P, C, N, S> MevShareBundle<'a, P, C, N, S>
 where
-    P: Provider<Http<C>, N>,
+    P: Provider<N>,
     C: Clone,
     N: Network,
     S: Signer + Send + Sync + 'static,
@@ -103,8 +103,7 @@ where
 
         RpcCall::new(
             request,
-            MevHttp::flashbots(
-                self.provider.client().transport().clone(),
+            MevHttp::new_with_reqwest_client(
                 self.bundle_signer,
             ),
         )
@@ -125,8 +124,7 @@ where
 
         RpcCall::new(
             request,
-            MevHttp::flashbots(
-                self.provider.client().transport().clone(),
+            MevHttp::new_with_reqwest_client(
                 self.bundle_signer,
             ),
         )

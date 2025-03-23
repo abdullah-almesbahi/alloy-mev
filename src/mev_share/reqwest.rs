@@ -25,10 +25,10 @@ pub type EthereumReqwestMevShareBundle<'a, P, S> =
 
 #[async_trait]
 impl<F, P, N> MevShareProviderExt<reqwest::Client, N>
-    for FillProvider<F, P, Http<reqwest::Client>, N>
+    for FillProvider<F, P, N>
 where
     F: TxFiller<N>,
-    P: Provider<Http<reqwest::Client>, N>,
+    P: Provider<N>,
     N: Network,
     <N as Network>::TxEnvelope: Encodable2718 + Clone,
 {
@@ -70,7 +70,7 @@ where
 
         RpcCall::new(
             request,
-            MevHttp::flashbots(self.client().transport().clone(), signer),
+            MevHttp::new_with_reqwest_client(signer),
         )
         .await
     }
@@ -90,7 +90,7 @@ where
 
         RpcCall::new(
             request,
-            MevHttp::flashbots(self.client().transport().clone(), signer),
+            MevHttp::new_with_reqwest_client(signer),
         )
         .await
     }
